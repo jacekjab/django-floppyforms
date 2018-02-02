@@ -76,7 +76,7 @@ class Input(Widget):
             value = formats.localize_input(value)
         return force_text(value)
 
-    def get_context(self, name, value, attrs=None):
+    def get_context(self, name, value, attrs=None, renderer=None):
         context = {
             'type': self.input_type,
             'name': name,
