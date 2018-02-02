@@ -181,7 +181,7 @@ class SlugInput(TextInput):
     template_name = 'floppyforms/slug.html'
 
     """<input type="text"> validating slugs with a pattern"""
-    def get_context(self, name, value, attrs):
+    def get_context(self, name, value, attrs, renderer=None):
         context = super(SlugInput, self).get_context(name, value, attrs)
         context['attrs']['pattern'] = "[-\w]+"
         return context
@@ -236,7 +236,7 @@ class ClearableFileInput(FileInput):
     def clear_checkbox_id(self, name):
         return name + '_id'
 
-    def get_context(self, name, value, attrs):
+    def get_context(self, name, value, attrs, renderer=None):
         context = super(ClearableFileInput, self).get_context(name, value,
                                                               attrs)
         ccb_name = self.clear_checkbox_name(name)
@@ -440,7 +440,7 @@ class CheckboxInput(Input, forms.CheckboxInput):
         super(CheckboxInput, self).__init__(attrs)
         self.check_test = boolean_check if check_test is None else check_test
 
-    def get_context(self, name, value, attrs):
+    def get_context(self, name, value, attrs, renderer=None):
         result = self.check_test(value)
         context = super(CheckboxInput, self).get_context(name, value, attrs)
         if result:
@@ -473,7 +473,7 @@ class Select(Input):
         super(Select, self).__init__(attrs)
         self.choices = list(choices)
 
-    def get_context(self, name, value, attrs=None, choices=()):
+    def get_context(self, name, value, attrs=None, choices=(), renderer=None):
         if not hasattr(value, '__iter__') or isinstance(value,
                                                         six.string_types):
             value = [value]
@@ -639,7 +639,7 @@ class SelectDateWidget(forms.Widget):
     def get_context_data(self):
         return {}
 
-    def get_context(self, name, value, attrs=None, extra_context={}):
+    def get_context(self, name, value, attrs=None, extra_context={}, renderer=None):
         context = {
             'year_field': self.year_field % name,
             'month_field': self.month_field % name,
